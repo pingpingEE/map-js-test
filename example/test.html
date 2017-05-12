@@ -8,8 +8,11 @@
 <body>
 <div id="map"></div>
 <script>
-  var map = new MyMapJs.default.Layer();
-  map.initLayer('map', null);
+  var map = new MyMapJs.default.Map();
+  map.initMap('map', {
+    zoom: 2,
+    center: [0, 0]
+  });
 </script>
 </body>
 </html>

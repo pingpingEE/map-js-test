@@ -6,8 +6,10 @@
 const MyMapJs = {};
 MyMapJs.version = require('../package.json').version;
 import {ol} from './constants';
-import Layer from './layer/Layer';
+import Map from './map/Map';
+import View from './view/View';
 
 MyMapJs.ol = ol;
-MyMapJs.Layer = Layer;
+MyMapJs.Map = Map;
+MyMapJs.View = View;
 export default MyMapJs;
