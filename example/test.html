@@ -8,13 +8,20 @@
 <body>
 <div id="map"></div>
 <script>
-  var map = new MyMapJs.default.Map();
+  const map = new MyMapJs.default.Map();
   map.initMap('map', {
     zoom: 2,
     center: [0, 0],
     layers: [
       {
-        type: 'OSM'
+        type: 'WMTS',
+        layer: 'vec',
+        url: 'http://t{0-6}.tianditu.cn/vec_c/wmts'
+      },
+      {
+        type: 'WMTS',
+        layer: 'cva',
+        url: 'http://t{0-6}.tianditu.cn/cva_c/wmts'
       }
     ]
   });
