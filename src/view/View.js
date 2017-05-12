@@ -16,8 +16,8 @@ class View {
    * @private
    */
   _addView(options) {
-    const basics = this._addBasicsOptions(options);
-    const extend = this._addExtendOptions(options);
+    const basics = this._addBasicsView(options);
+    const extend = this._addExtendView(options);
     return new ol.View(Object.assign(basics, extend));
   }
 
@@ -27,7 +27,7 @@ class View {
    * @returns {{center: [number,number], zoom: number, enableRotation: boolean, extent: undefined, projection: string, rotation: undefined, resolution: undefined}}
    * @private
    */
-  _addBasicsOptions(options) {
+  _addBasicsView(options) {
     const option = options || {};
     return {
       center: (option['center'] && Array.isArray(option['center'])) ? option['center'] : [0, 0], // 中心点
@@ -46,7 +46,7 @@ class View {
    * @returns {{maxResolution: undefined, minResolution: undefined, maxZoom: undefined, minZoom: undefined, resolutions: undefined, zoomFactor: number, constrainRotation: boolean}}
    * @private
    */
-  _addExtendOptions(options) {
+  _addExtendView(options) {
     const option = options || {};
     return {
       maxResolution: (option['maxResolution'] && (typeof option['maxResolution'] === 'number')) ? option['maxResolution'] : undefined, // 最大分辨率

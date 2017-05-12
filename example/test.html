@@ -11,7 +11,12 @@
   var map = new MyMapJs.default.Map();
   map.initMap('map', {
     zoom: 2,
-    center: [0, 0]
+    center: [0, 0],
+    layers: [
+      {
+        type: 'OSM'
+      }
+    ]
   });
 </script>
 </body>

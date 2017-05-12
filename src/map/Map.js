@@ -1,10 +1,11 @@
 /**
  * @author zhangyp
  * @desc ol.Map 层
- * @date 2017/5/12
+ * @date 2017/5/
  */
 import {ol} from './../constants';
 import View from './../view/View';
+import Layer from './../layer/Layer';
 /**
  * @class 地图类
  */
@@ -35,13 +36,11 @@ class Map {
    * @param options 参数配置
    */
   _addMap(id, options) {
+    options = options || {};
+    const layers = (options['layers'] && options['layers'] instanceof Array) ? options['layers'] : [];
     this.map = new ol.Map({
       view: new View()._addView(options),
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
+      layers: new Layer()._addLayer(layers),
       target: id
     });
   }
