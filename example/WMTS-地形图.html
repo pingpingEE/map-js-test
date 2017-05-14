@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tile-WMTS-地形图</title>
+  <script type="text/javascript" src="./../dist/bundle.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  const map = new MyMapJs.default.Map();
+  map.initMap('map', {
+    zoom: 2,
+    center: [0, 0],
+    layers: [
+      {
+        type: 'WMTS',
+        layer: 'ter',
+        url: 'http://t{0-6}.tianditu.cn/ter_c/wmts'
+      },
+      {
+        type: 'WMTS',
+        layer: 'cta',
+        url: 'http://t{0-6}.tianditu.cn/cta_c/wmts'
+      }
+    ]
+  });
+</script>
+</body>
+</html>

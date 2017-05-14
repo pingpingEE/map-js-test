@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>first test</title>
+  <title>Tile-WMTS-影像图</title>
   <script type="text/javascript" src="./../dist/bundle.js"></script>
 </head>
 <body>
@@ -15,13 +15,18 @@
     layers: [
       {
         type: 'WMTS',
-        layer: 'vec',
-        url: 'http://t{0-6}.tianditu.cn/vec_c/wmts'
+        layer: 'ibo',
+        url: 'http://t{0-6}.tianditu.cn/ibo_c/wmts'
       },
       {
         type: 'WMTS',
-        layer: 'cva',
-        url: 'http://t{0-6}.tianditu.cn/cva_c/wmts'
+        layer: 'img',
+        url: 'http://t{0-6}.tianditu.cn/img_c/wmts'
+      },
+      {
+        type: 'WMTS',
+        layer: 'cia',
+        url: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
       }
     ]
   });
