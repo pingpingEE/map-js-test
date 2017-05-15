@@ -1,4 +1,5 @@
 import Tile from './../layer/Tile';
+import Vector from './../layer/Vector';
 /**
  * @author zhangyp
  * @desc ol.Layer layer层
@@ -27,6 +28,9 @@ class Layer {
       const type = layer['type'] ? layer['type'] : 'OSM';
       if (type === 'OSM' || type === 'WMTS' || type === 'XYZ')
         this.layers.push(new Tile()._addTile(layer));
+      if (type === 'Vector') {
+        this.layers.push(new Vector()._addVector(layer));
+      }
     });
     return this.layers;
   }
