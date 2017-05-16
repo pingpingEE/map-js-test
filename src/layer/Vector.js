@@ -4,6 +4,7 @@
  * @date 2017/5/15
  */
 import {ol} from './../constants';
+import Style from './../style/Style';
 /**
  * @class Vector
  * @author zhangyp
@@ -23,7 +24,7 @@ class Vector {
     const type = options['type'] ? options['type'] : 'Vector';
     if (type === 'Vector') {
       tempVector.setSource(this._sourceVector(option));
-      tempVector.setStyle(this._styleVector(option));
+      tempVector.setStyle(new Style()._addStyle(option['style']));
     }
     return tempVector;
   }
@@ -39,7 +40,6 @@ class Vector {
     return {
       extent: (option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4) ? option['extent'] : undefined, // 范围,
       opacity: (option['opacity'] && option['opacity'] >= 0 && option['opacity'] <= 1) ? option['opacity'] : 1, // 透明度,
-      // style: option['style'] ? option['style'] : undefined, // 样式,
       visible: (option['visible'] && (typeof option['visible'] === 'boolean')) ? option['visible'] : true, // 是否可见,
       updateWhileAnimating: (option['updateWhileAnimating'] && (typeof option['updateWhileAnimating'] === 'boolean')) ? option['updateWhileAnimating'] : false, // 动画时 重新创建
       updateWhileInteracting: (option['updateWhileInteracting'] && (typeof option['updateWhileInteracting'] === 'boolean')) ? option['updateWhileInteracting'] : false // 交互时 重新创建
