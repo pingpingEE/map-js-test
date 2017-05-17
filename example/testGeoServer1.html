@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>testGeoServer(例子)</title>
+  <script src="../node_modules/openlayers/dist/ol.js"></script>
+  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css">
+</head>
+<body>
+<div>
+  <button onclick="clearALL()">清除</button>
+  <button onclick="addVector()">叠加GeoServer矢量要素</button>
+  <button onclick="addImageWMS()">叠加GeoServer切片</button>
+</div>
+<div id="map"></div>
+<script>
+
+  const map = new ol.Map({
+    layers: [new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })],
+    target: 'map',
+    view: new ol.View({
+      center: [-73.99710639567148, 40.742270050255556],
+      maxZoom: 19,
+      zoom: 14,
+      projection: 'EPSG:4326'
+    })
+  });
+
+  function clearALL() {
+    const layers = map.getLayers().getArray();
+    for (let i = 0; i < layers.length; i++) {
+      if (layers[i] && (layers[i] instanceof ol.layer.Vector || layers[i] instanceof ol.layer.Image)) {
+        map.removeLayer(layers[i])
+      }
+    }
+  }
+  function addVector() {
+    const vector = new ol.layer.Vector({
+      layerName: 'vector',
+      source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: 'http://localhost/geoserver/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=nyc_roads:nyc_roads&outputFormat=application/json&srsname=EPSG:4326'
+        // 注：此服务为geoServer发布的   查询到的数据格式为json数据格式
+      }),
+      style: function () {
+        return new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 2
+          })
+        });
+      }
+    });
+    map.addLayer(vector);
+  }
+
+  function addImageWMS() {
+    const imageWMS = new ol.layer.Image({
+      layerName: 'wms',
+      source: new ol.source.ImageWMS({
+        url: 'http://localhost/geoserver/wms',  // 注：此服务为GeoServer 发布的本地服务  返回数据格式Image
+        params: {
+          LAYERS: 'nyc_roads:nyc_roads',
+          STYLES: '',
+          VERSION: '1.1.1',
+          WIDTH: '507',
+          HEIGHT: '768',
+          BBOX: '983139.586528036,206320.73526931898,992798.0463343342,220980.21576583455',
+          SRS: 'EPSG:2908',
+          REQUEST: 'GetMap',
+          TRANSPARENT: true,
+          SERVICE: 'WMS'
+        }
+      })
+    });
+    map.addLayer(imageWMS)
+  }
+</script>
+</body>
+</html>
