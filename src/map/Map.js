@@ -37,10 +37,9 @@ class Map {
    */
   _addMap(id, options) {
     options = options || {};
-    const layers = (options['layers'] && options['layers'] instanceof Array) ? options['layers'] : [];
     this.map = new ol.Map({
       view: new View()._addView(options),
-      layers: new Layer()._addLayer(layers),
+      layers: new Layer()._addLayer(options),
       target: id
     });
   }

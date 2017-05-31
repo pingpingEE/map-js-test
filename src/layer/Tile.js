@@ -20,9 +20,10 @@ class Tile {
     const layerType = ['OSM', 'WMTS', 'XYZ', 'ArcGIS'];
     if (!type || type === 'OSM' || layerType.indexOf(type) === -1)
       tempTile.setSource(this._sourceOSM(option));
-    if (type === 'WMTS') {
+    if (type === 'WMTS')
       tempTile.setSource(this._sourceWMTS(option));
-    }
+    if (type === 'XYZ')
+      tempTile.setSource(this._sourceXYZ(option));
     return tempTile;
   }
 
@@ -145,5 +146,68 @@ class Tile {
       wrapX: (option['wrapX'] && (typeof option['wrapX'] === 'boolean')) ? option['wrapX'] : true // 是否水平
     };
   }
+
+  /**
+   * ol.source.XYZ 源
+   * @param options
+   * @returns {ol.source.XYZ}
+   * @private
+   */
+  _sourceXYZ(options) {
+    const option = options || {};
+    if (!option['url'] && (typeof option['url'] !== 'string')) {
+      console.error('url必传,请重新查看参数传递');
+      return;
+    }
+    if (!option['origin'] && Array.isArray(option['origin'])) {
+      console.error('切片原点必传,请重新查看参数传递');
+      return;
+    }
+    const basics = this._addBasicsXYZ(option);
+    const extend = this._addExtendXYZ(option);
+    return new ol.source.XYZ(Object.assign(basics, extend));
+  }
+
+  /**
+   * XYZ 基础参数
+   * @param options
+   * @returns {{opacity: number, visible: boolean}}
+   * @private
+   */
+  _addBasicsXYZ(options) {
+    const option = options || {};
+    return {
+      tileGrid: new ol.tilegrid.TileGrid({
+        tileSize: option['tileSize'] && (Array.isArray(option['tileSize'])) ? option['tileSize'] : [256, 256],
+        origin: option['origin'],
+        extent: option['extent'], // 若没有 查看view是否传
+        resolutions: option['resolutions'] // 若没有 查看view是否传
+      }),
+      tileSize: option['tileSize'],
+      opaque: (option['opaque'] === true) ? option['opaque'] : false, // 图层是否不透明（主题相关）
+      projection: option['projection'],
+      tileUrlFunction: function (tileCoordinate) {
+        let url = (option['url'] + '/tile/{z}/{y}/{x}').replace('{z}',
+          (tileCoordinate[0]).toString()).replace('{x}',
+          tileCoordinate[1].toString()).replace('{y}',
+          (-tileCoordinate[2] - 1).toString());
+        return url;
+      }
+    };
+  }
+
+  /**
+   * XYZ 扩展参数
+   * @param options
+   * @returns {{wrapX: boolean}}
+   * @private
+   */
+  _addExtendXYZ(options) {
+    const option = options || {};
+    return {
+      wrapX: option['wrapX'] && (typeof option['wrapX'] === 'boolean') ? option['wrapX'] : false
+    };
+  }
+
 }
 export default Tile;
