@@ -4,7 +4,7 @@
  * @date 2017/5/15
  */
 import {ol} from './../constants';
-import Style from './../style/Style';
+// import Style from './../style/Style';
 /**
  * @class Vector
  * @author zhangyp
@@ -23,8 +23,12 @@ class Vector {
     const tempVector = new ol.layer.Vector(Object.assign(basics, extend));
     const type = options['type'] ? options['type'] : 'Vector';
     if (type === 'Vector') {
-      tempVector.setSource(this._sourceVector(option));
-      tempVector.setStyle(new Style()._addStyle(option['style']));
+      let feature = new ol.Feature({
+        geometry: 'Point (-11002773.23093247 4600907.689710885)'
+      });
+      // tempVector.setSource(this._sourceVector(option));
+      // tempVector.setStyle(new Style()._addStyle(option['style']));
+      tempVector.getSource().addFeature(feature);
     }
     return tempVector;
   }

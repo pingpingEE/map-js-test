@@ -39,9 +39,22 @@ class Map {
     options = options || {};
     this.map = new ol.Map({
       view: new View()._addView(options),
-      layers: new Layer()._addLayer(options),
+      layers: new Layer()._addLayers(options),
       target: id
     });
+    this.map.on('click', function (event) {
+      console.warn(event.coordinate);
+    });
+  }
+
+  /**
+   * 暴漏叠加图层方法
+   * @param options
+   * @private
+   */
+  _addLayer(options) {
+    options = options || {};
+    this.map.addLayer(new Layer()._addLayer(options));
   }
 
 }

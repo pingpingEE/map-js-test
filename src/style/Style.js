@@ -38,6 +38,9 @@ class Style {
     if (type === 'CirCle') {
       return this._addCirCle(option);
     }
+    if (type === 'Stroke') {
+      return this._addStroke(option);
+    }
   }
 
   /**

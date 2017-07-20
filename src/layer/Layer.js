@@ -20,10 +20,31 @@ class Layer {
    * @returns {*}
    * @private
    */
-  _addLayer(options) {
+  _addLayers(options) {
     const option = options || {};
     const layers = option['layers'] || [];
     if (!Array.isArray(layers) || layers.length === 0) {
+      console.warn('layers 参数传输格式有误 默认返回OSM数据源');
+      return [new Tile()._addTile({type: 'OSM'})];
+    }
+    layers.forEach(layer => {
+      options['layer'] = layer;
+      this._addLayer(options);
+    });
+    return this.layers;
+  }
+
+  /**
+   *
+   * @param options
+   * @returns {*}
+   * @private
+   */
+  _addLayer(options) {
+    const option = options || {};
+    const layer = options['layer'];
+    const type = layer['type'] ? layer['type'] : 'OSM';
+    if (!type) {
       console.warn('layers 参数传输格式有误 默认返回OSM数据源');
       return [new Tile()._addTile({type: 'OSM'})];
     }
@@ -35,26 +56,23 @@ class Layer {
       resolutions[z] = size / Math.pow(2, z);
       matrixIds[z] = z;
     }
-    layers.forEach(layer => {
-      const type = layer['type'] ? layer['type'] : 'OSM';
-      if (type === 'XYZ') {
-        // extent tileSize resolutions  当前未传输情况下 获取上一级别view下得  即默认 {} 下的
-        if (!layer['extent']) {
-          layer['extent'] = option['extent'] ? option['extent'] : [-180, -90, 180, 90];
-        }
-        if (!layer['tileSize']) {
-          layer['tileSize'] = option['tileSize'] && (Array.isArray(option['tileSize'])) ? option['tileSize'] : [256, 256];
-        }
-        if (!layer['resolutions']) {
-          layer['resolutions'] = option['resolutions'] && (Array.isArray(option['resolutions'])) ? option['resolutions'] : resolutions;
-        }
+    if (type === 'XYZ') {
+      // extent tileSize resolutions  当前未传输情况下 获取上一级别view下得  即默认 {} 下的
+      if (!layer['extent']) {
+        layer['extent'] = option['extent'] ? option['extent'] : [-180, -90, 180, 90];
       }
-      if (type === 'OSM' || type === 'WMTS' || type === 'XYZ')
-        this.layers.push(new Tile()._addTile(layer));
-      if (type === 'Vector') {
-        this.layers.push(new Vector()._addVector(layer));
+      if (!layer['tileSize']) {
+        layer['tileSize'] = option['tileSize'] && (Array.isArray(option['tileSize'])) ? option['tileSize'] : [256, 256];
       }
-    });
+      if (!layer['resolutions']) {
+        layer['resolutions'] = option['resolutions'] && (Array.isArray(option['resolutions'])) ? option['resolutions'] : resolutions;
+      }
+    }
+    if (type === 'OSM' || type === 'WMTS' || type === 'XYZ')
+      this.layers.push(new Tile()._addTile(layer));
+    if (type === 'Vector') {
+      this.layers.push(new Vector()._addVector(layer));
+    }
     return this.layers;
   }
 }
