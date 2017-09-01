@@ -18,12 +18,24 @@ class Tile {
     const tempTile = new ol.layer.Tile(Object.assign(basics, extend));
     const type = options['type'] ? options['type'] : 'OSM';
     const layerType = ['OSM', 'WMTS', 'XYZ', 'ArcGIS'];
-    if (!type || type === 'OSM' || layerType.indexOf(type) === -1)
+    if (!type || type === 'OSM' || layerType.indexOf(type) === -1) {
       tempTile.setSource(this._sourceOSM(option));
-    if (type === 'WMTS')
+      // tempTile.getSource().on('tileloadstart', function () {
+      //   console.warn('加载开始');
+      // });
+      // tempTile.getSource().on('tileloaderror', function () {
+      //   console.warn('加载错误');
+      // });
+      // tempTile.getSource().on('tileloadend', function () {
+      //   console.warn('加载结束');
+      // });
+    }
+    if (type === 'WMTS') {
       tempTile.setSource(this._sourceWMTS(option));
-    if (type === 'XYZ')
+    }
+    if (type === 'XYZ') {
       tempTile.setSource(this._sourceXYZ(option));
+    }
     return tempTile;
   }
 
@@ -107,7 +119,7 @@ class Tile {
    */
   _addBasicsWMTS(options) {
     const option = options || {};
-    const projection = ol.proj.get('EPSG:4326');
+    const projection = 'EPSG:4326';
     const size = ol.extent.getWidth(projection.getExtent()) / 256;
     const resolutions = [];
     const matrixIds = [];

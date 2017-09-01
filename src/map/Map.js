@@ -48,6 +48,15 @@ class Map {
   }
 
   /**
+   * 获取当前地图对象
+   * @returns {null|ol.Map|ol.renderer.Map|ol.renderer.webgl.Map|ol.renderer.canvas.Map|ol.test.rendering.Map|*}
+   * @private
+   */
+  _getMap() {
+    return this.map;
+  }
+
+  /**
    * 暴漏叠加图层方法
    * @param options
    * @private

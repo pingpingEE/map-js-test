@@ -21,15 +21,27 @@ class Vector {
     const basics = this._addBasicsVector(option);
     const extend = this._addExtendVector(option);
     const tempVector = new ol.layer.Vector(Object.assign(basics, extend));
-    const type = options['type'] ? options['type'] : 'Vector';
-    if (type === 'Vector') {
-      let feature = new ol.Feature({
-        geometry: 'Point (-11002773.23093247 4600907.689710885)'
-      });
-      // tempVector.setSource(this._sourceVector(option));
-      // tempVector.setStyle(new Style()._addStyle(option['style']));
-      tempVector.getSource().addFeature(feature);
-    }
+    // tempVector 创建临时矢量图层
+    let source = new ol.source.Vector({
+      wrapX: false
+    });
+    let style = new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(67, 110, 238, 0.4)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#4781d9',
+        width: 2
+      }),
+      image: new ol.style.Circle({
+        radius: 7,
+        fill: new ol.style.Fill({
+          color: '#ffcc33'
+        })
+      })
+    });
+    tempVector.setSource(source);
+    tempVector.setStyle(style);
     return tempVector;
   }
 
