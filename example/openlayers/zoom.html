@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="../../node_modules/openlayers/dist/ol.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../node_modules/openlayers/dist/ol.css" type="text/css"/>
+</head>
+<body>
+<button value="zoom-In" onclick="zoom('in')">放大</button>
+<button value="zoom-Out" onclick="zoom('out')">缩小</button>
+<div id="map"></div>
+<script type="text/javascript">
+  var map = new ol.Map({
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      view: new ol.View({
+        center: [0, 0],
+        zoom: 2
+      }),
+      target: 'map'
+    }
+  )
+
+  function zoom(value) {
+    var view = map.getView()
+    var zoom = view.getZoom()
+    if (value === 'in') {
+      view.setZoom(zoom + 1)
+    } else if (value === 'out') {
+      view.setZoom(zoom - 1)
+    }
+  }
+</script>
+</body>
+</html>
